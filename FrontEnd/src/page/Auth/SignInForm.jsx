@@ -6,8 +6,11 @@ import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react'
 import AuthLayout from './Auth'
+import { useDispatch } from 'react-redux'
+import { login } from '@/State/Auth/Action'
 
 const SignInForm = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [formData, setFormData] = React.useState({
@@ -24,6 +27,7 @@ const SignInForm = () => {
   }
 
   const handleSubmit = (e) => {
+    dispatch(login({e , navigate}));
     e.preventDefault();
     console.log({ ...formData, rememberMe });
   }

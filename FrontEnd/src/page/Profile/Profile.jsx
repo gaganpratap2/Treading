@@ -6,8 +6,11 @@ import { VerifiedIcon } from 'lucide-react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import AccountVerificationForm from "./AccountVerificationForm"
+import Store from '@/State/Store'
 
 const Profile = () => {
+
+  const {auth} = useSelector(store => store);
 
   const handleTwoStepVerification = () => {
     console.log("hello")
@@ -26,12 +29,12 @@ const Profile = () => {
               <div className="grid sm:grid-cols-2 gap-x-10 gap-y-5">
                 <div className="flex">
                   <p className='w-32 text-sm font-medium'>Email</p>
-                  <p className='text-muted-foreground'>codewithrana@gmail.com</p>
+                  <p className='text-muted-foreground'>{auth.user?.email}</p>
                 </div>
 
                 <div className="flex">
                   <p className='w-32 text-sm font-medium'>Fullname</p>
-                  <p className='text-muted-foreground'>codewithrana@gmail.com</p>
+                  <p className='text-muted-foreground'>{auth.user?.fullName}</p>
                 </div>
 
                 <div className="flex">
@@ -61,7 +64,7 @@ const Profile = () => {
 
                 <div className="flex">
                   <p className='w-32 text-sm font-medium'>Email</p>
-                  <p className='text-muted-foreground'>codewithrana@gmail.com</p>
+                  <p className='text-muted-foreground'>{auth.user?.email}</p>
                 </div>
 
               </div>

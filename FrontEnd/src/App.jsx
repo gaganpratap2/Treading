@@ -14,8 +14,20 @@ import StockDetails from './page/StockDetails/StockDetails'
 import SignInForm from './page/Auth/SignInForm'
 import SignUpForm from './page/Auth/SignUpForm'
 import ForgotPasswordForm from './page/Auth/ForgotPasswordForm'
+import { useSelector } from 'react-redux'
+import Store from './State/Store'
+import { useEffect } from 'react'
+import { getUser } from './State/Auth/Action'
 
 function App() {
+  const {auth} =  useSelector(store => Store);
+  console.log(auth);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUser(getUser(auth.jwt) || localStorage.getItem("jwt")));
+  },[auth.jwt])
 
   return (
     <>

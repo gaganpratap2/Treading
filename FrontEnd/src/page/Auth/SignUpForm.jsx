@@ -5,8 +5,11 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { User, Mail, Lock, Eye, EyeOff } from 'lucide-react'
 import Auth from './Auth'
+import { useDispatch } from 'react-redux'
+import { register } from "@/State/Auth/Action"
 
 const SignUpForm = () => {
+  const dispatch = useDispatch()
 
   const [formData, setFormData] = React.useState({
     fullName: "",
@@ -25,12 +28,13 @@ const SignUpForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    dispatch(register(e));
 
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
-      return;
-    }
-    setError("");
+    // if (formData.password !== formData.confirmPassword) {
+    //   setError("Passwords do not match");
+    //   return;
+    // }
+    // setError("");
     console.log(formData);
   }
 

@@ -11,10 +11,12 @@ import { Grip, Search } from "lucide-react";
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { AvatarImage } from '@/components/ui/avatar';
 import Siderbar from './Siderbar';
+import { useSelector } from 'react-redux';
 
 
 
 const Navbar = () => {
+  const {auth} = useSelector(store => store.getAuth)
   return (
     <div className="flex items-center justify-between border-b px-4 py-3">
 
@@ -58,7 +60,7 @@ const Navbar = () => {
         <div className="">
           <Avatar>
             <AvatarFallback>
-               R 
+               {auth.user.fullName[0].toUpperCase()}
             </AvatarFallback>
           </Avatar>
         </div>
