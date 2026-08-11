@@ -5,7 +5,7 @@ import { type } from "node:os";
 export const register = (userData) => async(dispatch)=> {
     dispatch({type:REGISTER_REQUEST});
 
-    const baseUrl = "";
+    const baseUrl = "http://localhost:5454";
     try {
         const res = await axios.post(`${baseUrl}/auth/signup` , userData);
         const user = res.data;
@@ -53,7 +53,7 @@ export const getUser = (jwt) => async(dispatch)=> {
         const user = res.data;
         console.log(user);
 
-        dispatch({type:GET_USER_FAILURE , playload:user.jwt});
+        dispatch({type:GET_USER_SUCCESS , playload:user.jwt});
 
     } catch (error) {
         dispatch({type:GET_USER_FAILURE , playload: error.message})
@@ -65,4 +65,4 @@ export const getUser = (jwt) => async(dispatch)=> {
 export const logOut = () => (dispatch) => {
     localStorage.clear();   
     dispatch({type:LOGOUT});
-}
+} 

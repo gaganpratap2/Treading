@@ -9,7 +9,7 @@ const initialState = {
 }
 
 const authReducer = (state = initialState, action) => {
-    switch(action){
+    switch(action.type){
         case REGISTER_REQUEST :
         case LOGIN_REQUEST:
         case GET_USER_REQUEST:    
@@ -23,8 +23,7 @@ const authReducer = (state = initialState, action) => {
              return{...state , user: action.playload , error :null , loading:false}; 
 
 
-        
-
+    
         case REGISTER_FALIURE :
         case LOGIN_FALIURE:
         case GET_USER_FAILURE:
