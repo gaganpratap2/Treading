@@ -2,10 +2,14 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button';
 import React from 'react'
 import { DialogClose } from '@/components/ui/dialog';
+import { useDispatch, useSelector } from 'react-redux';
 
 const WithdrawalForm = () => {
 
     const [amount , setAmount] = React.useState('');
+    const dispatch = useDispatch();
+    const {wallet} = useSelector(store=>store);
+
   
       const handleChange = (e) => {
           setAmount(e.target.value)

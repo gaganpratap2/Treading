@@ -1,13 +1,54 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { CopyIcon, DollarSign, RefreshCw, RotateCw, Shuffle, ShuffleIcon, UploadIcon, WalletIcon } from 'lucide-react'
-import React from 'react'
+import React, { useEffect } from 'react'
 import TopUpWallet from './TopUpWallet'
 import WithdrawalForm from './WithdrawalForm'
 import TransferForm from './TransferForm'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { useDispatch, useSelector } from 'react-redux'
+import { depositeMoney, getUserWallet, getWalletTransaction } from '@/State/Wallet/Action'
+import { useLocation, useNavigate } from 'react-router-dom'
+
+
+function useQuery(){
+    return new URLSearchParams(useLocation.search)
+}
+
 
 const Wallet = () => {
+    const dispatch = useDispatch();
+    const {wallet} = useSelector(store => store);
+    const Navigate = useNavigate();
+
+    useEffect( () => {
+        handelFetchUserWallet();
+        handelFetchUserWallet();
+    },[]);
+
+    useEffect( () => {
+        if(orderId){
+            dispatch(depositeMoney({jwt : localStorage.getItem("jwt"),
+                orderId,
+                paymentId: razorpayPaymentId || paymentId,
+                navigate,
+            }))
+        }
+    },[orderId , paymentId , razorpayPaymentId]);
+
+    const query = useQuery();
+    const orderId = query.get("order_id");
+    const paymentId = query.get("payment_id");
+    const razorpayPaymentId = query.get("razorpay_payment_id");
+
+    const handelFetchUserWallet = () => {
+        dispatch(getUserWallet(localStorage.getItem("jwt")))
+    } 
+
+
+    const handleFetchWalletTransaction =() => {
+        dispatch(getWalletTransaction({jwt : localStorage.getItem("jwt")}))
+    }
   return (
     <div className='flex flex-col items-center'>
 
@@ -23,14 +64,14 @@ const Wallet = () => {
                                 <CardTitle className="text-2xl">My Wallet</CardTitle>
                                 <div className="flex items-center gap-2">
                                     <p className='text-muted-foreground text-sm'>
-                                        #A2354
+                                        #{wallet.userWallet?.id}
                                     </p>
                                     <CopyIcon size={13} className='cursor-pointer text-muted-foreground hover:text-foreground transition-colors' />
                                 </div>
                             </div>
                         </div>
                         <div className="">
-                            <RefreshCw className="w-5 h-5 cursor-pointer text-muted-foreground hover:text-foreground transition-colors" />
+                            <RefreshCw onClick={handelFetchUserWallet} className="w-5 h-5 cursor-pointer text-muted-foreground hover:text-foreground transition-colors" />
                         </div>
                     </div>
                 </CardHeader>
@@ -38,7 +79,7 @@ const Wallet = () => {
                 <CardContent>
                     <div className="flex items-center gap-2">
                         <DollarSign className="text-muted-foreground" />
-                        <span className='text-3xl font-semibold tracking-tight'>30000</span>
+                        <span className='text-3xl font-semibold tracking-tight'>{wallet.userWallet.balance}</span>
                     </div>
 
                     <div className="flex gap-4 mt-6">
@@ -105,24 +146,28 @@ const Wallet = () => {
                 </div>
 
                 <div className="space-y-3">
-                    <Card className="px-5 py-4 flex flex-row justify-between items-center shadow-sm">
+                    {wallet.transactions.map((item , i) => (
+                        <div key={i}>
+                            <Card className="px-5 py-4 flex flex-row justify-between items-center shadow-sm">
                         <div className="flex items-center gap-4">
                             <Avatar>
-                                <AvatarFallback>
+                                <AvatarFallback onClick={handleFetchWalletTransaction}>
                                     <ShuffleIcon className="h-4 w-4" />
                                 </AvatarFallback>
                             </Avatar>
 
                             <div className="space-y-1">
-                                <h1 className="font-medium">Buy Assets</h1>
-                                <p className='text-sm text-muted-foreground'>2026-08-08</p>
+                                <h1 className="font-medium">{item.type || item.purpose}</h1>
+                                <p className='text-sm text-muted-foreground'>{item.date}</p>
                             </div>
                         </div>
 
                         <div className="">
-                            <p className="text-green-500 font-medium">999 USD</p>
+                            <p className="text-green-500 font-medium">{item.amount} USD</p>
                         </div>
                     </Card>
+                        </div>
+                    ))}
                 </div>
 
             </div>

@@ -3,8 +3,12 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Field, FieldLabel } from '@/components/ui/field'
 import { DialogClose } from '@/components/ui/dialog'
+import { useDispatch } from 'react-redux'
+import { addPaymentDetails } from '@/State/Withdrawal/Action'
 
 const PaymentDetailsForm = () => {
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = React.useState({
     accountHolderName: "",
     ifsc: "",
@@ -19,8 +23,15 @@ const PaymentDetailsForm = () => {
   }
 
   const handleSubmit = () => {
+    dispatch(addPaymentDetails({
+      paymentDetails:data,
+      jwt: localStorage.getItem("jwt")
+    }))
     console.log(formData);
   }
+
+
+
 
   return (
     <div className='px-10 py-2 space-y-6'>

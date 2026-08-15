@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { logout } from "@/State/Auth/Action"; // <-- Import logout
+import { logOut } from "@/State/Auth/Action"; // <-- Import logout
 
 const menu = [
   { name: "Home", path: "/", icon: <Home className="h-4 w-4" /> },
@@ -65,11 +65,11 @@ const Sidebar = () => {
   const dispatch = useDispatch();
 
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(logOut());
   };
 
   return (
-    <div className="flex flex-col gap-1 px-2 py-3 h-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+    <div className="flex flex-col gap-1 px-2 py-3 h-full bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
       {menu.map((item) => (
         <div key={item.name}>
           <SheetClose className="w-full">
@@ -77,7 +77,7 @@ const Sidebar = () => {
               variant="ghost"
               className="w-full justify-start gap-3 hover:bg-muted"
               onClick={() => {
-                if (item.name === "Logout") {
+                if (item.name === "logOut") {
                   handleLogout();
                 }
                 navigate(item.path);

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   Table,
   TableBody,
@@ -10,11 +10,19 @@ import {
 } from "@/components/ui/table"
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { getCoinList } from '@/State/Coin/Action'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
-const AssetTable = () => {
+const AssetTable = ({coin , category}) => {
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+
   return (
     <Table>
+      <ScrollArea className={`{$category=="all" ? "h-[74vh]" : "h-[82vh]"}`}>
   <TableHeader>
     <TableRow>
       <TableHead className="w-25">COIN</TableHead>
@@ -26,24 +34,26 @@ const AssetTable = () => {
     </TableRow>
   </TableHeader>
   <TableBody>
-    {[1,1,1,1,1,1,1,1,1,1].map( (item , index) => 
-        <TableRow key = {index}>
-      <TableCell onClick={()=> navigate(`market/bitcoin/`)} className="font-medium flex items-center gap-2">
+    {coin.map( (item , index) => 
+        <TableRow key = {item.id}>
+      <TableCell onClick={()=> navigate(`market/${item.id}/`)} className="font-medium flex items-center gap-2">
         <Avatar className = "-z-50">
-          <AvatarImage src="https://coin-images.coingecko.com/coins/images/1/large/bitcoin.png?1696501400" />
+          <AvatarImage src="{}item.image" />
         </Avatar>
-        <span>Bitcoin</span>
+        <span>{item.name}</span>
       </TableCell>
-      <TableCell>BTC</TableCell>
-      <TableCell>83248932479</TableCell>
-      <TableCell>23223e434e</TableCell>
-      <TableCell>34324234</TableCell>
+      <TableCell>{item.symbol}</TableCell>
+      <TableCell>{item.total_volume}</TableCell>
+      <TableCell>{item.market_kap}</TableCell>
+      <TableCell>{item.price_change_percentage_24h}</TableCell>
 
-      <TableCell className="text-right">$32222</TableCell>
+      <TableCell className="text-right">{item.current_price}</TableCell>
     </TableRow>
     )}
     
   </TableBody>
+  </ScrollArea>
+
     </Table>
   )
 }

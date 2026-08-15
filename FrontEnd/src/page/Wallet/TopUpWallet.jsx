@@ -3,17 +3,22 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import React from 'react'
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+import { useDispatch } from 'react-redux';
+import { paymentHandler } from '@/State/Wallet/Action';
 
 const TopUpWallet = () => {
     const [amount , setAmount] = React.useState('');
     const [paymentMethod , setPaymentMethod] = React.useState("RAZORPAY");
+
+    const dispatch = useDispatch();
 
     const handlepaymentMethodChange = (value) => {
         setPaymentMethod(value)
     }
 
     const handleSubmit = () => {
-        console.log(amount , paymentMethod)
+        console.log(amount , paymentMethod);
+        dispatch(paymentHandler({jwt : localStorage.getItem("jwt") , paymentMethod , amount}))
     }
 
     const handleChange = (e) => {
