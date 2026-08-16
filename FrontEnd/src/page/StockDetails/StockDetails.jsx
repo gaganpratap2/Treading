@@ -8,12 +8,15 @@ import StockChart from '../Home/StockChart'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { fetchCoinDetails } from '@/State/Coin/Action'
+import { addItemToWatchList } from '@/State/watchlist/Action'
 
 const StockDetails = () => {
     const dispatch = useDispatch();
     const {id} = useParams();
 
-    const {coin} = useSelector(store => store);
+    const {coin , watchlist} = useSelector(store => store);
+
+
 
 
     console.log("param " , params);
@@ -23,6 +26,12 @@ const StockDetails = () => {
         dispatch(fetchCoinDetails({coinId : id , jwt:localStorage.getItem("jwt")}));
 
     },[id]);
+
+
+    const handleAddToWatchList=() => {
+        dispatch(addItemToWatchList({coinId : coin.coinDetails?.id , jwt : localStorage.getItem("jwt")}))
+    }
+
   return (
     <div className='p-5 mt-5'>
         <div className="flex justify-between">
@@ -58,9 +67,9 @@ const StockDetails = () => {
             </div>
 
             <div className="">
-                <Button>
+                <Button onClick= {handleAddToWatchList}>
 
-                    {true ?( <BookMarkedFillIcon /> ):
+                    {existInWatchlist(watchlist.items , coin.coinDetails) ?( <BookMarkedFillIcon /> ):
                     (<BookMarkedIcon className='h-6 w-6' />)}
 
                 </Button>

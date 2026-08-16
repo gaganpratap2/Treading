@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Bookmark } from 'lucide-react'
+import { useSelector , useDispatch } from 'react-redux'
+import { getWithdrawalHistory } from '@/State/Withdrawal/Action'
 
 const withdrawals = [
   { id: 1, time: '10:24 AM', date: 'Jul 20, 2026', coin: 'Bitcoin', icon: 'https://coin-images.coingecko.com/coins/images/1/large/bitcoin.png?1696501400', amount: '0.0123 BTC', status: 'Completed' },
@@ -14,6 +16,14 @@ const Withdrawal = () => {
     // your removal logic here
     console.log('remove', id)
   }
+
+    const dispatch = useDispatch();
+    const {wallet  , withdrawal} = useSelector(store=>store);
+
+    useEffect( () => {
+      dispatch(getWithdrawalHistory(localStorage.getItem("jwt")))
+    },[])
+
 
   return (
     <div className="p-5">
@@ -31,7 +41,7 @@ const Withdrawal = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {withdrawals.map((item) => (
+            {withdrawal.history.map((item) => (
               <TableRow key={item.id} className="hover:bg-muted/50 transition-colors">
                 <TableCell>
                   <p>{item.time}</p>

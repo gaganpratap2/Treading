@@ -1,0 +1,81 @@
+
+
+
+
+
+
+
+
+
+
+const withdrawalReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case WITHDRAWAL_REQUEST:
+    case WITHDRAWAL_PROCEED_REQUEST:
+    case GET_WITHDRAWAL_HISTORY_REQUEST:
+    case GET_WITHDRAWAL_REQUEST_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+
+    case WITHDRAWAL_SUCCESS:
+      return {
+        ...state,
+        withdrawal: action.payload,
+        loading: false,
+        error: null,
+      };
+
+    case ADD_PAYMENT_DETAILS_SUCCESS:
+    case GET_PAYMENT_DETAILS_SUCCESS:
+      return {
+        ...state,
+        paymentDetails: action.payload,
+        loading: false,
+        error: null,
+      };
+
+    case WITHDRAWAL_PROCEED_SUCCESS:
+      return {
+        ...state,
+        requests: state.requests.map((item) =>
+          item.id == action.payload.id ? action.payload : item
+        ),
+        loading: false,
+        error: null,
+      };
+
+    case GET_WITHDRAWAL_HISTORY_SUCCESS:
+      return {
+        ...state,
+        history: action.payload,
+        loading: false,
+        error: null,
+      };
+
+    case GET_WITHDRAWAL_REQUEST_SUCCESS:
+      return {
+        ...state,
+        requests: action.payload,
+        loading: false,
+        error: null,
+      };
+
+    case WITHDRAWAL_FAILURE:
+    case WITHDRAWAL_PROCEED_FAILURE:
+    case GET_WITHDRAWAL_HISTORY_FAILURE:
+    case GET_WITHDRAWAL_REQUEST_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export default withdrawalReducer;
